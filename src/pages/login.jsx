@@ -5,13 +5,62 @@ import { DASHBOARD } from "../constants/route";
 import FirebaseContext from "../context/firebase";
 import useForm from "../hooks/useForm";
 import PointSpreadLoading from "react-loadingg";
+// import Firebase from "firebase/app";
+import * as validationRules from "../services/firebase";
+import is from "date-fns/esm/locale/is/index.js";
 
 const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const { firebase } = useContext(FirebaseContext);
+  const { firebase, provider } = useContext(FirebaseContext);
+
   const history = useHistory();
   // console.log(errors);
+
+  const facebookLogin = async () => {
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(async (result) => {
+        /** @type {firebase.auth.OAuthCredential} */
+        // var credential = result.credential;
+        // The signed-in user info.
+        var user = result.user;
+        // console.log(user.email.split("@")[0]);
+        const userExist = await validationRules.doesUsernameExist(
+          user.email.split("@")[0]
+        );
+        // console.log(user.uid);
+
+        if (!userExist.length) {
+          const res = await firebase
+            .firestore()
+            .collection("users")
+            .add({
+              userId: user.uid,
+              username: user.email.split("@")[0],
+              emailAdress: user.email,
+              followers: [],
+              fullname: user.displayName,
+              following: [],
+              dateCreated: Date.now(),
+            });
+          console.log(res);
+          history.push(DASHBOARD);
+        }
+
+        // This gives you a Facebook Access Token. You can use it to access the Facebook API.
+        // var accessToken = credential.accessToken;
+
+        // ...
+      })
+      .catch((error) => {
+        // Handle Errors here.
+        console.log(error);
+
+        // ...
+      });
+  };
   const handleLogin = async () => {
     try {
       setLoading(true);
@@ -43,7 +92,7 @@ const Login = () => {
   //container flex mx-auto max-w-screen-md items-center h-screen
   return (
     <div className="container flex mx-auto max-w-screen-md items-center h-screen">
-      <div className="flex w-3/5    items-center">
+      <div className="flex w-3/5  mt-10 mr-10  items-center">
         <img
           src="/images/iphone-with-profile.jpg"
           alt="iPhone with Instagram app"
@@ -93,7 +142,19 @@ const Login = () => {
               {loading ? "Loading" : "Log In"}
             </button>
           </form>
-          <div className="h-20"></div>
+          <div className="flex flex-row mt-5 items-center ">
+            <div className="line  bg-gray-primary"></div>
+            <div className=" p-2 font-semibold text-xs text-gray-base">OR</div>
+            <div className="line  bg-gray-primary"></div>
+          </div>
+          <div className="flex flex-row  items-center ">
+            <button
+              onClick={facebookLogin}
+              className={`bg-blue-medium fbutton rounded text-white w-full h-8  mt-6 font-semibold `}
+            >
+              Login with Facebook
+            </button>
+          </div>
           <div className="h-10"></div>
         </div>
 

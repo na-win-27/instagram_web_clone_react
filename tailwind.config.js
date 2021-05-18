@@ -13,6 +13,7 @@ module.exports = {
       white: "#ffffff",
       white2: "#FAFAFA",
       blue: {
+        base: "#385185",
         medium: "#0095F6",
       },
       black: {

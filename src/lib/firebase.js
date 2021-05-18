@@ -15,7 +15,12 @@ const firebase = Firebase.initializeApp(config);
 
 const { FieldValue } = Firebase.firestore;
 
-export { firebase, FieldValue };
+var provider = new Firebase.auth.FacebookAuthProvider();
+provider.setCustomParameters({
+  display: "popup",
+});
+
+export { firebase, FieldValue, provider };
 
 // import { seedDatabase } from "../seed";
 // console.log(firebase);
