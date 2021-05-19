@@ -6,7 +6,7 @@ export const doesUsernameExist = async (username) => {
     .collection("users")
     .where("username", "==", username)
     .get();
-
+  // console.log(res);
   return res.docs.map((user) => user.length > 0);
 };
 
@@ -19,3 +19,21 @@ export const doesEmailExist = async (emailAddress) => {
 
   return res.docs.map((user) => user.length > 0);
 };
+
+export async function getUserById(uid) {
+  const res = await firebase
+    .firestore()
+    .collection("users")
+    .where("userId", "==", uid)
+    .get();
+  // console.log(res);
+  const user = res.docs.map((item) => ({ ...item.data(), docId: item.id }));
+  return user;
+}
+
+export async function getUsers() {
+  const res = await firebase.firestore().collection("users").get();
+  // console.log(res);
+  const user = res.docs.map((item) => ({ ...item.data(), docId: item.id }));
+  return user;
+}

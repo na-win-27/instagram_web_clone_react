@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 import { DASHBOARD } from "../constants/route";
 import FirebaseContext from "../context/firebase";
 import useForm from "../hooks/useForm";
-import PointSpreadLoading from "react-loadingg";
+// import PointSpreadLoading from "react-loadingg";
 // import Firebase from "firebase/app";
 import * as validationRules from "../services/firebase";
-import is from "date-fns/esm/locale/is/index.js";
+// import is from "date-fns/esm/locale/is/index.js";
 
 const Login = () => {
   const [errors, setErrors] = useState({});
@@ -46,9 +46,8 @@ const Login = () => {
               dateCreated: Date.now(),
             });
           console.log(res);
-          history.push(DASHBOARD);
         }
-
+        history.push(DASHBOARD);
         // This gives you a Facebook Access Token. You can use it to access the Facebook API.
         // var accessToken = credential.accessToken;
 
@@ -108,7 +107,7 @@ const Login = () => {
             />
           </h1>
           {errors && (
-            <p className="mb-8 text-xs font-bold font-thin text-red-primary">
+            <p className="mb-8 text-xs font-bold  text-red-primary">
               {errors.message}
             </p>
           )}

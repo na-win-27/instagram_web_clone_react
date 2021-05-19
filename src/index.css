@@ -6,3 +6,8 @@
 .fbutton {
   background-color: #385185 !important;
 }
+
+.dp {
+  height: 40px !important;
+  width: 40px !important;
+}

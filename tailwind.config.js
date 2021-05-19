@@ -21,7 +21,7 @@ module.exports = {
         faded: "#00000059",
       },
       gray: {
-        base: "#616161",
+        base: "#A0A0A0",
         background: "#fafafa",
         primary: "#dbdbdb",
       },
